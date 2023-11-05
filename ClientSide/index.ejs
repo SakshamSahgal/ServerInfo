@@ -10,7 +10,7 @@
     <div class="container mt-5">
         <h1 class="text-center">System Information</h1>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <h2>Operating System</h2>
                 <ul class="list-group">
                     <li class="list-group-item">Platform: <%= platform %></li>
@@ -19,8 +19,8 @@
                     <li class="list-group-item">Architecture: <%= architecture %></li>
                 </ul>
             </div>
-            <div class="col-md-6">
-                <h2>Memory Information</h2>
+            <div class="col-md-4">
+                <h2>[RAM] Memory Information</h2>
                 <div class="list-group">
                     <div class="list-group-item">
                         <strong>Total Memory (GB):</strong>
@@ -36,16 +36,59 @@
                     <div class="progress-bar bg-success" role="progressbar" style="width: <%= (freeMemory / totalMemory * 100).toFixed(2) %>%;" aria-valuenow="<%= (freeMemory / totalMemory * 100).toFixed(2) %>" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <h2>Disk Information</h2>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <strong>Total Disk Space (GB):</strong>
+                        <span><%= (diskInfo.size / (1024 * 1024 * 1024)).toFixed(2) %> GB</span>
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Free Disk Space (GB):</strong>
+                        <span><%= (diskInfo.free / (1024 * 1024 * 1024)).toFixed(2) %> GB</span>
+                    </div>
+                </div>
             
+                <!-- Progress bar for Free Disk Space -->
+                <div class="progress mt-3">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: <%= (diskInfo.free / diskInfo.size * 100).toFixed(2) %>%;" aria-valuenow="<%= (diskInfo.free / diskInfo.size * 100).toFixed(2) %>" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
         </div>
         <div class="row my-3">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <h2>System Information</h2>
                 <ul class="list-group">
                     <li class="list-group-item">Home Directory: <%= homedir %></li>
                     <li class="list-group-item">Hostname: <%= hostname %></li>
                 </ul>
             </div>
+            <div class="col-md-6">
+                <h2>User Information</h2>
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <strong>User ID (UID):</strong>
+                        <span><%= userInfo.uid %></span>
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Group ID (GID):</strong>
+                        <span><%= userInfo.gid %></span>
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Username:</strong>
+                        <span><%= userInfo.username %></span>
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Home Directory:</strong>
+                        <span><%= userInfo.homedir %></span>
+                    </div>
+                    <div class="list-group-item">
+                        <strong>Shell:</strong>
+                        <span><%= userInfo.shell || 'N/A' %></span>
+                    </div>
+                </div>
+            </div>
+            
         </div>
         <div class="row my-3">
             <div class="col-md-12">

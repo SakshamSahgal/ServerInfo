@@ -1,5 +1,7 @@
 
 const os = require('os');
+const checkDiskSpace = require('check-disk-space');
+const path = require('path');
 
 let platform = os.platform();
 let osType = os.type();
@@ -55,6 +57,16 @@ let networkInterfaces = os.networkInterfaces();
 // let minutes = Math.floor(uptime / 60);
 // let seconds = uptime % 60;
 // console.log(`Server Uptime: ${hours} hours, ${minutes} minutes, ${seconds} seconds`);
-console.log('User Info:', os.userInfo());
+// console.log('User Info:', os.userInfo());
+let userInfo = os.userInfo();
 
-module.exports = { platform, osType, release, architecture, totalMemory, freeMemory, cpus, homedir, hostname, networkInterfaces };
+async function getDiskSpaceInfo() {
+    try {
+      const diskInfo = await checkDiskSpace(path.join(__dirname, '..'));
+      return diskInfo;
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  }
+
+module.exports = { platform, osType, release, architecture, totalMemory, freeMemory, cpus, homedir, hostname, networkInterfaces, getDiskSpaceInfo, userInfo};
