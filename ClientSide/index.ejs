@@ -6,6 +6,7 @@
     <title>System Information</title>
 </head>
 <%- include('./ReusableComponents/BootstrapCDN.ejs') %>
+<%- include('./ReusableComponents/LoadOverlay.ejs') %>
 <body>
     <div class="container mt-5">
         <h1 class="text-center">System Information</h1>
@@ -35,7 +36,7 @@
                 <div class="progress mt-3">
                     <div class="progress-bar bg-success" role="progressbar" style="width: <%= (freeMemory / totalMemory * 100).toFixed(2) %>%;" aria-valuenow="<%= (freeMemory / totalMemory * 100).toFixed(2) %>" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-            </div>
+             </div>
             <div class="col-md-4">
                 <h2>Disk Information</h2>
                 <div class="list-group">
@@ -53,6 +54,21 @@
                 <div class="progress mt-3">
                     <div class="progress-bar bg-success" role="progressbar" style="width: <%= (diskInfo.free / diskInfo.size * 100).toFixed(2) %>%;" aria-valuenow="<%= (diskInfo.free / diskInfo.size * 100).toFixed(2) %>" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
+
+                <div class="button-container mt-3">
+                    <div class="form-group">
+                        <p>Space Used : <%=(size/(1024*1024)).toFixed(2)%> MB </p> 
+                        <label for="noOfCopies">No Of Copies</label>
+                        <div class="input-group">
+                            <input type="number" id="noOfCopies" class="form-control" value="10">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="createCopiesBtn">Create Copies</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger btn-block" id="deleteBtn">Delete All Copies</button>
+                </div>
+
             </div>
         </div>
         <div class="row my-3">
@@ -148,3 +164,35 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+<!-- //axios CDN -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    let noOfCopies = document.getElementById("noOfCopies");
+    let createCopiesBtn = document.getElementById('createCopiesBtn');
+    let loadOverlay = document.getElementById('loadOverlay');
+
+    createCopiesBtn.addEventListener("click",() => {
+        loadOverlay.hidden = false; // Show the loading overlay
+        axios.post('/createCopies/' + noOfCopies.value).then(Response => {
+            alert(Response.data);
+            loadOverlay.hidden = true; // Hide the loading overlay
+            window.location.reload();
+        }).catch(err => {
+            alert(err);
+        })
+    })
+
+    let deleteBtn = document.getElementById('deleteBtn');
+
+    deleteBtn.addEventListener("click",() => {
+        loadOverlay.hidden = false; // Show the loading overlay
+        axios.delete('/deleteCopies').then(Response => {
+            alert(Response.data);
+            loadOverlay.hidden = true; // Hide the loading overlay
+            window.location.reload();
+        }).catch(err => {
+            alert(err);
+        })
+    })
+
+</script>
