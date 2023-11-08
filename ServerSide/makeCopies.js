@@ -45,7 +45,7 @@ async function getSize() {
       for (const file of files) {
         const filePath = path.join(folderPath, file);
         const stats = await fs.stat(filePath);
-        console.log(stats)
+        //console.log(stats)
 
         if (stats.isFile()) {
           totalSize += stats.size;
